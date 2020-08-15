@@ -7,12 +7,6 @@ using System.Collections.Generic;
 
 namespace PhysicsSim
 {
-	public class Planet
-	{
-		public int xCoord;
-		public int yCoord;
-	}
-
 	// facilitated keyboard controls
 	public class KeyboardControls
 	{
@@ -31,23 +25,29 @@ namespace PhysicsSim
 			}
 		}
 
-		public static bool OneShot(int key)
+		public static string KeyInfo(int key)
 		{
-			if (!previousState[key] && currentState[key])
+			string result = (previousState[key], currentState[key]) switch
 			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+				(false, false) => "held_released",
+				(false, true) => "just_pressed",
+				(true, false) => "just_released",
+				(true, true) => "held_pressed",
+			};
+
+			return result;
 		}		
 
 	}
-
-	/// <summary>
-	/// This is the main type for your game.
-	/// </summary>
+	
+	// class responsible for spherical objects
+	public class Planet
+	{
+		public int xCoord;
+		public int yCoord;
+		public int radius;
+	}
+	
 	public class Game1 : Game
 	{
 		GraphicsDeviceManager graphics;
@@ -109,12 +109,13 @@ namespace PhysicsSim
 			KeyboardControls.UpdateState();
 			base.Update(gameTime);
 
-			if (KeyboardControls.OneShot(0))
+			if (KeyboardControls.KeyInfo(0) == "just_pressed")
 			{
 				Planet newPlanet = new Planet
 				{
 					xCoord = Mouse.GetState().X,
-					yCoord = Mouse.GetState().Y
+					yCoord = Mouse.GetState().Y,
+					radius = 100 
 				};
 				planets.Add(newPlanet);
 			}
@@ -129,23 +130,22 @@ namespace PhysicsSim
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			// Drawing code
+			spriteBatch.Begin();
 
-			if (KeyboardControls.OneShot(1))
+			if (KeyboardControls.KeyInfo(1) == "just_pressed")
 			{
-				spriteBatch.Begin();
 				spriteBatch.DrawCircle(Mouse.GetState().X, Mouse.GetState().Y, 100, 100, Color.Aquamarine, 100);
-				spriteBatch.End();
 			}
 
-			if (Keyboard.GetState().IsKeyDown(Keys.Q))
+			if (KeyboardControls.KeyInfo(2) == "held_pressed")
 			{
-				spriteBatch.Begin();
 				foreach (Planet planet in planets)
 				{
 					spriteBatch.DrawCircle(planet.xCoord, planet.yCoord, 100, 100, Color.Red, 100);
 				}
-				spriteBatch.End();
 			}
+			
+			spriteBatch.End();
 
 			base.Draw(gameTime);
 		}
