@@ -132,16 +132,11 @@ namespace PhysicsSim
 			// Drawing code
 			spriteBatch.Begin();
 
-			if (KeyboardControls.KeyInfo(1) == "just_pressed")
-			{
-				spriteBatch.DrawCircle(Mouse.GetState().X, Mouse.GetState().Y, 100, 100, Color.Aquamarine, 100);
-			}
-
 			if (KeyboardControls.KeyInfo(2) == "held_pressed")
 			{
 				foreach (Planet planet in planets)
 				{
-					spriteBatch.DrawCircle(planet.xCoord, planet.yCoord, 100, 100, Color.Red, 100);
+					spriteBatch.DrawCircle(planet.xCoord, planet.yCoord, planet.radius, 100, Color.Red, planet.radius);
 				}
 			}
 			
