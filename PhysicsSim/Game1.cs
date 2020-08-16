@@ -10,8 +10,8 @@ namespace PhysicsSim
 	// facilitated keyboard controls
 	public class KeyboardControls
 	{
-		// TODO: make this a dictionary so that the controls have names
-		static Keys[] controls = { Keys.A, Keys.S, Keys.D, Keys.F };
+		// TODO: add alternative configuration for keyboards with no numberpad
+		static Keys[] controls = { Keys.NumPad0, Keys.NumPad1, Keys.NumPad2, Keys.NumPad3 };
 
 		static bool[] currentState = new bool[controls.Length];
 		static bool[] previousState = new bool[controls.Length];
@@ -46,13 +46,22 @@ namespace PhysicsSim
 		public int xCoord;
 		public int yCoord;
 		public int radius;
+
+		public void Draw()
+		{
+			Game1.spriteBatch.DrawCircle(xCoord, yCoord, radius, 100, Color.Red, radius);
+		}
 	}
 	
 	public class Game1 : Game
 	{
 		GraphicsDeviceManager graphics;
-		SpriteBatch spriteBatch;
+		// making this pubilic and static is probably a bad idea?
+		public static SpriteBatch spriteBatch;
+		SpriteFont textFont;
+		
 		List<Planet> planets = new List<Planet>();
+		string mode = "idle";
 
 		public Game1()
 		{
@@ -68,8 +77,8 @@ namespace PhysicsSim
 		/// </summary>
 		protected override void Initialize()
 		{
-			// TODO: Add your initialization logic here
-
+			// Add your initialization logic here
+			this.IsMouseVisible = true;
 			base.Initialize();
 		}
 
@@ -81,8 +90,10 @@ namespace PhysicsSim
 		{
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
+			// Load Arial font for use throughout the UI
+			textFont = Content.Load<SpriteFont>("Arial Bold");
 
-			// TODO: use this.Content to load your game content here
+			// use this.Content to load your game content here
 		}
 
 		/// <summary>
@@ -91,7 +102,7 @@ namespace PhysicsSim
 		/// </summary>
 		protected override void UnloadContent()
 		{
-			// TODO: Unload any non ContentManager content here
+			// Unload any non ContentManager content here
 		}
 
 		/// <summary>
@@ -105,10 +116,10 @@ namespace PhysicsSim
 				Exit();
 
 			// Game update logic
-
-			KeyboardControls.UpdateState();
 			base.Update(gameTime);
 
+			KeyboardControls.UpdateState();
+			
 			if (KeyboardControls.KeyInfo(0) == "just_pressed")
 			{
 				Planet newPlanet = new Planet
@@ -121,27 +132,20 @@ namespace PhysicsSim
 			}
 		}
 
-		/// <summary>
-		/// This is called when the game should draw itself.
-		/// </summary>
+		// Drawing code
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
-
-			// Drawing code
 			spriteBatch.Begin();
 
-			if (KeyboardControls.KeyInfo(2) == "held_pressed")
+			foreach (Planet planet in planets)
 			{
-				foreach (Planet planet in planets)
-				{
-					spriteBatch.DrawCircle(planet.xCoord, planet.yCoord, planet.radius, 100, Color.Red, planet.radius);
-				}
+				planet.Draw();
 			}
+			spriteBatch.DrawString(textFont, "Mode: " + mode, new Vector2(10, 10), Color.Black);
 			
 			spriteBatch.End();
-
 			base.Draw(gameTime);
 		}
 	}
