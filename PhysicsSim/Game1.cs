@@ -79,14 +79,14 @@ namespace PhysicsSim
 
 	public interface IMode
 	{
+		string name { get; }
 		void Update();
 	}
 
 	public class ModeIdle : IMode
 	{
-		// TODO: change this to a parameter
-		public string name = "idle";
-		
+		public string name { get; } = "idle";
+
 		public void Update()
 		{
 			if (KeyboardControls.KeyInfo(1) == "just_pressed")
@@ -102,8 +102,7 @@ namespace PhysicsSim
 
 	public class ModeCreatePlanet : IMode
 	{
-		// TODO: change this to a parameter
-		public string name = "create planet";
+		public string name { get; } = "create planet";
 
 		public void Update()
 		{
@@ -201,7 +200,7 @@ namespace PhysicsSim
 			newPlanet.Update();
 			
 			// TODO: add mode name here - use properties
-			spriteBatch.DrawString(textFont, "Mode: ", new Vector2(10, 10), Color.Black);
+			spriteBatch.DrawString(textFont, "Mode: " + currentMode.name, new Vector2(10, 10), Color.Black);
 			
 			spriteBatch.End();
 			base.Draw(gameTime);
