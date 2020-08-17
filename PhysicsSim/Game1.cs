@@ -43,25 +43,74 @@ namespace PhysicsSim
 	// class responsible for spherical objects
 	public class Planet
 	{
+		public int drawLevel = 0;
+		
 		public int xCoord;
 		public int yCoord;
 		public int radius;
 
 		public void Draw()
 		{
-			Game1.spriteBatch.DrawCircle(xCoord, yCoord, radius, 100, Color.Red, radius);
+			if (drawLevel > 0)
+			{
+				Game1.spriteBatch.DrawCircle(xCoord, yCoord, radius, 100, Color.Red, radius);
+			}
 		}
 	}
-	
+
+	public interface IMode
+	{
+		void Update();
+	}
+
+	public class ModeIdle : IMode
+	{
+		public string name = "idle";
+		
+		public void Update()
+		{
+			if (KeyboardControls.KeyInfo(1) == "just_pressed")
+			{
+				Game1.newPlanet = new Planet
+				{
+					drawLevel = 1,
+					xCoord = Mouse.GetState().X,
+					yCoord = Mouse.GetState().Y,
+					radius = 100 
+				};
+				
+				Game1.currentMode = new ModeCreatePlanet();
+			}
+		}
+	}
+
+	public class ModeCreatePlanet : IMode
+	{
+		public string name = "create planet";
+
+		public void Update()
+		{
+			Planet p = Game1.newPlanet;
+			p.xCoord = Mouse.GetState().X;
+			p.yCoord = Mouse.GetState().Y;
+			
+			if (KeyboardControls.KeyInfo(1) == "just_pressed")
+			{
+				Game1.planets.Add(Game1.newPlanet);
+				Game1.currentMode = new ModeIdle();
+			}
+		}
+	}
+
 	public class Game1 : Game
 	{
 		GraphicsDeviceManager graphics;
-		// making this pubilic and static is probably a bad idea?
 		public static SpriteBatch spriteBatch;
 		SpriteFont textFont;
 		
-		List<Planet> planets = new List<Planet>();
-		string mode = "idle";
+		public static List<Planet> planets = new List<Planet>();
+		public static Planet newPlanet = new Planet();
+		public static IMode currentMode = new ModeIdle();
 
 		public Game1()
 		{
@@ -117,19 +166,8 @@ namespace PhysicsSim
 
 			// Game update logic
 			base.Update(gameTime);
-
 			KeyboardControls.UpdateState();
-			
-			if (KeyboardControls.KeyInfo(0) == "just_pressed")
-			{
-				Planet newPlanet = new Planet
-				{
-					xCoord = Mouse.GetState().X,
-					yCoord = Mouse.GetState().Y,
-					radius = 100 
-				};
-				planets.Add(newPlanet);
-			}
+			currentMode.Update();
 		}
 
 		// Drawing code
@@ -143,7 +181,10 @@ namespace PhysicsSim
 			{
 				planet.Draw();
 			}
-			spriteBatch.DrawString(textFont, "Mode: " + mode, new Vector2(10, 10), Color.Black);
+			newPlanet.Draw();
+			
+			// TODO: add mode name here - use properties
+			spriteBatch.DrawString(textFont, "Mode: ", new Vector2(10, 10), Color.Black);
 			
 			spriteBatch.End();
 			base.Draw(gameTime);
