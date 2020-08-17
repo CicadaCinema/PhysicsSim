@@ -45,9 +45,12 @@ namespace PhysicsSim
 	{
 		public int drawLevel = 0;
 		
+		// TODO: use vectors instead
 		public int xCoord;
 		public int yCoord;
 		public int radius;
+		public int xVelocity = 2;
+		public int yVelocity = 2;
 
 		public void CreateUpdate()
 		{
@@ -63,10 +66,12 @@ namespace PhysicsSim
 			}
 		}
 
-		public void Draw()
+		public void Update()
 		{
 			if (drawLevel > 0)
 			{
+				xCoord += xVelocity;
+				yCoord += yVelocity;
 				Game1.spriteBatch.DrawCircle(xCoord, yCoord, radius, 100, Color.Red, radius);
 			}
 		}
@@ -191,9 +196,9 @@ namespace PhysicsSim
 
 			foreach (Planet planet in planets)
 			{
-				planet.Draw();
+				planet.Update();
 			}
-			newPlanet.Draw();
+			newPlanet.Update();
 			
 			// TODO: add mode name here - use properties
 			spriteBatch.DrawString(textFont, "Mode: ", new Vector2(10, 10), Color.Black);
