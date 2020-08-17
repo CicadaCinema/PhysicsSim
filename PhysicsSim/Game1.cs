@@ -49,6 +49,20 @@ namespace PhysicsSim
 		public int yCoord;
 		public int radius;
 
+		public void CreateUpdate()
+		{
+			if (drawLevel == 1)
+			{
+				xCoord = Game1.currentMouseState.X;
+				yCoord = Game1.currentMouseState.Y;
+				radius = Convert.ToInt32((Math.Tanh(Game1.currentMouseState.ScrollWheelValue / 1000.0)+1) * 100);
+			} else if (drawLevel == 2)
+			{
+				Game1.planets.Add(Game1.newPlanet);
+				Game1.newPlanet = new Planet();
+			}
+		}
+
 		public void Draw()
 		{
 			if (drawLevel > 0)
@@ -65,6 +79,7 @@ namespace PhysicsSim
 
 	public class ModeIdle : IMode
 	{
+		// TODO: change this to a parameter
 		public string name = "idle";
 		
 		public void Update()
@@ -73,12 +88,8 @@ namespace PhysicsSim
 			{
 				Game1.newPlanet = new Planet
 				{
-					drawLevel = 1,
-					xCoord = Mouse.GetState().X,
-					yCoord = Mouse.GetState().Y,
-					radius = 100 
+					drawLevel = 1
 				};
-				
 				Game1.currentMode = new ModeCreatePlanet();
 			}
 		}
@@ -86,17 +97,14 @@ namespace PhysicsSim
 
 	public class ModeCreatePlanet : IMode
 	{
+		// TODO: change this to a parameter
 		public string name = "create planet";
 
 		public void Update()
 		{
-			Planet p = Game1.newPlanet;
-			p.xCoord = Mouse.GetState().X;
-			p.yCoord = Mouse.GetState().Y;
-			
 			if (KeyboardControls.KeyInfo(1) == "just_pressed")
 			{
-				Game1.planets.Add(Game1.newPlanet);
+				Game1.newPlanet.drawLevel = 2;
 				Game1.currentMode = new ModeIdle();
 			}
 		}
@@ -107,6 +115,8 @@ namespace PhysicsSim
 		GraphicsDeviceManager graphics;
 		public static SpriteBatch spriteBatch;
 		SpriteFont textFont;
+		
+		public static MouseState currentMouseState;
 		
 		public static List<Planet> planets = new List<Planet>();
 		public static Planet newPlanet = new Planet();
@@ -167,7 +177,9 @@ namespace PhysicsSim
 			// Game update logic
 			base.Update(gameTime);
 			KeyboardControls.UpdateState();
+			currentMouseState = Mouse.GetState();
 			currentMode.Update();
+			newPlanet.CreateUpdate();
 		}
 
 		// Drawing code
