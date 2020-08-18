@@ -44,20 +44,15 @@ namespace PhysicsSim
 	public class Planet
 	{
 		public int drawLevel = 0;
-		
-		// TODO: use vectors instead
-		public int xCoord;
-		public int yCoord;
+		Vector2 position = new Vector2();
 		public int radius;
-		public int xVelocity = 2;
-		public int yVelocity = 2;
+		Vector2 velocity = new Vector2(2, 2);
 
 		public void CreateUpdate()
 		{
 			if (drawLevel == 1)
 			{
-				xCoord = Game1.currentMouseState.X;
-				yCoord = Game1.currentMouseState.Y;
+				position = new Vector2(Game1.currentMouseState.X, Game1.currentMouseState.Y);
 				radius = Convert.ToInt32((Math.Tanh(Game1.currentMouseState.ScrollWheelValue / 1000.0)+1) * 100);
 			} else if (drawLevel == 2)
 			{
@@ -70,22 +65,21 @@ namespace PhysicsSim
 		{
 			if (drawLevel > 0)
 			{
-				xCoord += xVelocity;
-				yCoord += yVelocity;
-				Game1.spriteBatch.DrawCircle(xCoord, yCoord, radius, 100, Color.Red, radius);
+				position = Vector2.Add(position, velocity);
+				Game1.spriteBatch.DrawCircle(position.X, position.Y, radius, 100, Color.Red, radius);
 			}
 		}
 	}
 
 	public interface IMode
 	{
-		string name { get; }
+		string Name { get; }
 		void Update();
 	}
 
 	public class ModeIdle : IMode
 	{
-		public string name { get; } = "idle";
+		public string Name { get; } = "idle";
 
 		public void Update()
 		{
@@ -102,7 +96,7 @@ namespace PhysicsSim
 
 	public class ModeCreatePlanet : IMode
 	{
-		public string name { get; } = "create planet";
+		public string Name { get; } = "create planet";
 
 		public void Update()
 		{
@@ -200,7 +194,7 @@ namespace PhysicsSim
 			newPlanet.Update();
 			
 			// TODO: add mode name here - use properties
-			spriteBatch.DrawString(textFont, "Mode: " + currentMode.name, new Vector2(10, 10), Color.Black);
+			spriteBatch.DrawString(textFont, "Mode: " + currentMode.Name, new Vector2(10, 10), Color.Black);
 			
 			spriteBatch.End();
 			base.Draw(gameTime);
