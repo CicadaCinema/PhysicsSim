@@ -63,8 +63,8 @@ namespace PhysicsSim
 
 		public void Update()
 		{
-			// if the planet is on the final drawLevel, update its velocity
-			if (drawLevel == 2)
+			// if the planet is on the final drawLevel and the game is unpaused, update its velocity
+			if (drawLevel == 2 && !Game1.pausedMode)
 			{
 				position = Vector2.Add(position, velocity);
 			}
@@ -126,6 +126,8 @@ namespace PhysicsSim
 		public static Planet newPlanet = new Planet();
 		public static IMode currentMode = new ModeIdle();
 
+		public static bool pausedMode = false;
+
 		public Game1()
 		{
 			graphics = new GraphicsDeviceManager(this);
@@ -182,6 +184,12 @@ namespace PhysicsSim
 			base.Update(gameTime);
 			KeyboardControls.UpdateState();
 			currentMouseState = Mouse.GetState();
+
+			if (KeyboardControls.KeyInfo(0) == "just_pressed")
+			{
+				pausedMode = !pausedMode;
+			}
+			
 			currentMode.Update();
 			newPlanet.CreateUpdate();
 		}
@@ -199,7 +207,11 @@ namespace PhysicsSim
 			}
 			newPlanet.Update();
 			
-			spriteBatch.DrawString(textFont, "Mode: " + currentMode.Name, new Vector2(10, 10), Color.Black);
+			spriteBatch.DrawString(textFont, "Mode: " + currentMode.Name, new Vector2(10, 10), Color.White);
+			if (pausedMode)
+			{
+				spriteBatch.DrawString(textFont, "PAUSED", new Vector2(10, 28), Color.White);
+			}
 			
 			spriteBatch.End();
 			base.Draw(gameTime);
