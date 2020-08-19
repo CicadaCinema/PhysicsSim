@@ -63,9 +63,15 @@ namespace PhysicsSim
 
 		public void Update()
 		{
-			if (drawLevel > 0)
+			// if the planet is on the final drawLevel, update its velocity
+			if (drawLevel == 2)
 			{
 				position = Vector2.Add(position, velocity);
+			}
+			
+			// unless the planet hasn't entered creation mode, draw it at its position
+			if (drawLevel > 0)
+			{
 				Game1.spriteBatch.DrawCircle(position.X, position.Y, radius, 100, Color.Red, radius);
 			}
 		}
@@ -193,7 +199,6 @@ namespace PhysicsSim
 			}
 			newPlanet.Update();
 			
-			// TODO: add mode name here - use properties
 			spriteBatch.DrawString(textFont, "Mode: " + currentMode.Name, new Vector2(10, 10), Color.Black);
 			
 			spriteBatch.End();
