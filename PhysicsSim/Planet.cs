@@ -10,6 +10,7 @@ namespace PhysicsSim
         Vector2 position;
         public int radius;
         Vector2 velocity;
+        Vector2 acceleration;
 
         public void CreateUpdate()
         {
@@ -19,7 +20,7 @@ namespace PhysicsSim
                 radius = Convert.ToInt32((Math.Tanh(Game1.currentMouseState.ScrollWheelValue / 1000.0)+1) * 100);
             } else if (drawLevel == 2)
             {
-                velocity = Vector2.Subtract(Game1.currentMouseVector, position);
+                velocity = Game1.currentMouseVector - position;
             } else if (drawLevel == 3)
             {
                 Game1.planets.Add(Game1.newPlanet);
@@ -33,8 +34,22 @@ namespace PhysicsSim
             // if the planet is on the final drawLevel and the game is unpaused, update its velocity
             if (drawLevel == 3 && !Game1.pausedMode)
             {
-                // scale down velocity
-                position = Vector2.Add(position, velocity/50);
+                // gravity!
+                // acceleration due to gravity = (constant*m)/(r^2) - this does not depend on the mass of the body being accelerated
+                acceleration = new Vector2();
+                foreach (Planet planet in Game1.planets)
+                {
+                    if (!Equals(planet, this) && ((planet.position - position).Length() > (planet.radius + radius)))
+                    {
+                        float accelerationMagnitude = planet.radius / Vector2.Subtract(planet.position, position).LengthSquared();
+                        Vector2 accelerationDirection = planet.position - position;
+                        acceleration += accelerationDirection * (accelerationMagnitude / accelerationDirection.Length());
+                    }
+                }
+                
+                // scale both acceleration and velocity
+                velocity += acceleration * 1000;
+                position += velocity/50;
             }
 			
             // unless the planet hasn't entered creation mode, draw it at its position
