@@ -31,8 +31,7 @@
         {
             if (KeyboardControls.KeyInfo(1) == "just_pressed")
             {
-                Game1.newPlanet.drawLevel = 2;
-                Game1.currentMode = new ModeIdle();
+                Game1.newPlanet.drawLevel += 1;
             }
         }
     }
