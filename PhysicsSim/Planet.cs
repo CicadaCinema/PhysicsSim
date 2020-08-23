@@ -15,11 +15,11 @@ namespace PhysicsSim
         {
             if (drawLevel == 1)
             {
-                position = new Vector2(Game1.currentMouseState.X, Game1.currentMouseState.Y);
+                position = Game1.currentMouseVector;
                 radius = Convert.ToInt32((Math.Tanh(Game1.currentMouseState.ScrollWheelValue / 1000.0)+1) * 100);
             } else if (drawLevel == 2)
             {
-                velocity = Vector2.Subtract(new Vector2(Game1.currentMouseState.X, Game1.currentMouseState.Y), position);
+                velocity = Vector2.Subtract(Game1.currentMouseVector, position);
             } else if (drawLevel == 3)
             {
                 Game1.planets.Add(Game1.newPlanet);

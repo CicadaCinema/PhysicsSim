@@ -12,6 +12,7 @@ namespace PhysicsSim
 		SpriteFont textFont;
 		
 		public static MouseState currentMouseState;
+		public static Vector2 currentMouseVector;
 		
 		public static List<Planet> planets = new List<Planet>();
 		public static Planet newPlanet = new Planet();
@@ -75,6 +76,7 @@ namespace PhysicsSim
 			base.Update(gameTime);
 			KeyboardControls.UpdateState();
 			currentMouseState = Mouse.GetState();
+			currentMouseVector = new Vector2(Game1.currentMouseState.X, Game1.currentMouseState.Y);
 
 			if (KeyboardControls.KeyInfo(0) == "just_pressed")
 			{
