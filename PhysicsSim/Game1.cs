@@ -34,7 +34,7 @@ namespace PhysicsSim
 		/// </summary>
 		protected override void Initialize()
 		{
-			// Add your initialization logic here
+			Window.AllowUserResizing = true;
 			this.IsMouseVisible = true;
 			base.Initialize();
 		}
