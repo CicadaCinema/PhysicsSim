@@ -7,7 +7,7 @@ namespace PhysicsSim
     public class Planet
     {
         public int drawLevel = 0;
-        Vector2 position = new Vector2();
+        Vector2 position;
         public int radius;
         Vector2 velocity;
 
@@ -33,7 +33,8 @@ namespace PhysicsSim
             // if the planet is on the final drawLevel and the game is unpaused, update its velocity
             if (drawLevel == 3 && !Game1.pausedMode)
             {
-                position = Vector2.Add(position, velocity);
+                // scale down velocity
+                position = Vector2.Add(position, velocity/50);
             }
 			
             // unless the planet hasn't entered creation mode, draw it at its position
