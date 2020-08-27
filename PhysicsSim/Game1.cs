@@ -1,7 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using MonoGame.Extended;
 
 namespace PhysicsSim
 {
@@ -10,6 +12,9 @@ namespace PhysicsSim
 		GraphicsDeviceManager graphics;
 		public static SpriteBatch spriteBatch;
 		SpriteFont textFont;
+
+		public static int currentWindowWidth;
+		public static int currentWindowHeight;
 		
 		public static MouseState currentMouseState;
 		public static Vector2 currentMouseVector;
@@ -17,8 +22,7 @@ namespace PhysicsSim
 		public static List<Planet> planets = new List<Planet>();
 		public static Planet newPlanet = new Planet();
 		public static IMode currentMode = new ModeIdle();
-
-		public static bool pausedMode = false;
+		public static IGridHandler currentMouseMode = new FreeMovement();
 
 		public Game1()
 		{
@@ -74,14 +78,15 @@ namespace PhysicsSim
 
 			// Game update logic
 			base.Update(gameTime);
-			KeyboardControls.UpdateState();
-			currentMouseState = Mouse.GetState();
-			currentMouseVector = new Vector2(Game1.currentMouseState.X, Game1.currentMouseState.Y);
+			
+			// check if user has resized the window
+			currentWindowWidth = Window.ClientBounds.Width;
+			currentWindowHeight = Window.ClientBounds.Height;
 
-			if (KeyboardControls.KeyInfo(0) == "just_pressed")
-			{
-				pausedMode = !pausedMode;
-			}
+			KeyboardControls.UpdateState();
+			KeyboardControls.UpdateGlobalSwitches();
+			currentMouseState = Mouse.GetState();
+			currentMouseMode.UpdateMousePosition();
 			
 			currentMode.Update();
 			newPlanet.CreateUpdate();
@@ -93,6 +98,8 @@ namespace PhysicsSim
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 			spriteBatch.Begin();
+			
+			currentMouseMode.DrawGrid();
 
 			foreach (Planet planet in planets)
 			{
@@ -101,7 +108,7 @@ namespace PhysicsSim
 			newPlanet.Update();
 			
 			spriteBatch.DrawString(textFont, "Mode: " + currentMode.Name, new Vector2(10, 10), Color.White);
-			if (pausedMode)
+			if (KeyboardControls.pausedMode)
 			{
 				spriteBatch.DrawString(textFont, "PAUSED", new Vector2(10, 28), Color.White);
 			}

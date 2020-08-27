@@ -11,6 +11,10 @@ namespace PhysicsSim
 
         static bool[] currentState = new bool[controls.Length];
         static bool[] previousState = new bool[controls.Length];
+        
+        // global switches
+        public static bool pausedMode = false;
+        static int gridLineVisibility = 0;
 
         public static void UpdateState()
         {
@@ -18,6 +22,36 @@ namespace PhysicsSim
             for (int i = 0; i < controls.Length; i++)
             {
                 currentState[i] = Keyboard.GetState().IsKeyDown(controls[i]);
+            }
+        }
+
+        public static void UpdateGlobalSwitches()
+        {
+            if (KeyInfo(0) == "just_pressed")
+            {
+                pausedMode = !pausedMode;
+            }
+            
+            // cycle through the grid levels
+            if (KeyInfo(2) == "just_pressed")
+            {
+                gridLineVisibility += 1;
+                switch (gridLineVisibility) 
+                {
+                    case 0:
+                        Game1.currentMouseMode = new FreeMovement();
+                        break;
+                    case 1:
+                        Game1.currentMouseMode = new SmallGrid();
+                        break;
+                    case 2:
+                        Game1.currentMouseMode = new LargeGrid();
+                        break;
+                    case 3:
+                        Game1.currentMouseMode = new FreeMovement();
+                        gridLineVisibility = 0;
+                        break;
+                }
             }
         }
 

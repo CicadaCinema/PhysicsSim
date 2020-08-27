@@ -32,7 +32,7 @@ namespace PhysicsSim
         public void Update()
         {
             // if the planet is on the final drawLevel and the game is unpaused, update its velocity
-            if (drawLevel == 3 && !Game1.pausedMode)
+            if (drawLevel == 3 && !KeyboardControls.pausedMode)
             {
                 // gravity!
                 // acceleration due to gravity = (constant*m)/(r^2) - this does not depend on the mass of the body being accelerated

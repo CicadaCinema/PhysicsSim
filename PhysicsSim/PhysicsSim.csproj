@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Game1.cs" />
     <Compile Include="IMode.cs" />
+    <Compile Include="IMouseInput.cs" />
     <Compile Include="KeyboardControls.cs" />
     <Compile Include="Planet.cs" />
     <Compile Include="Program.cs" />
