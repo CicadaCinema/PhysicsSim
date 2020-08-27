@@ -1,4 +1,6 @@
-﻿namespace PhysicsSim
+﻿using System.Collections.Generic;
+
+namespace PhysicsSim
 {
     public interface IMode
     {
@@ -19,6 +21,11 @@
                     drawLevel = 1
                 };
                 Game1.currentMode = new ModeCreatePlanet();
+            }
+
+            if (KeyboardControls.KeyInfo(3) == "just_pressed")
+            {
+                Game1.planets = new List<Planet>();
             }
         }
     }
