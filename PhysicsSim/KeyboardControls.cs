@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml;
 using Microsoft.Xna.Framework.Input;
 
 namespace PhysicsSim
@@ -6,8 +7,38 @@ namespace PhysicsSim
     // facilitated keyboard controls
     public class KeyboardControls
     {
-        // TODO: add alternative configuration for keyboards with no numberpad
+        public static void GetXmlResult()
+        {
+            using (XmlReader reader = XmlReader.Create("config.xml"))
+            {
+                while (reader.Read())
+                {
+                    if (reader.IsStartElement())
+                    {
+                        switch (reader.Name)
+                        {
+                            case "Binding":
+                                string keyName = reader["name"];
+                                string keyCodeString = reader["key"];
+                                int index = Array.IndexOf(controlNames, keyName);
+                                
+                                // if key name valid
+                                if (index != -1)
+                                {
+                                    Keys keyCode = (Keys) Enum.Parse(typeof(Keys), keyCodeString);
+                                    controls[index] = keyCode;
+                                }
+                                
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // default controls
         static Keys[] controls = { Keys.NumPad0, Keys.NumPad1, Keys.NumPad2, Keys.NumPad3 };
+        static string[] controlNames = { "Pause", "New", "Grid", "Clear" };
 
         static bool[] currentState = new bool[controls.Length];
         static bool[] previousState = new bool[controls.Length];
