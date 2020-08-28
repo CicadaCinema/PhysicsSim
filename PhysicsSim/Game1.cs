@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Resources;
+using System.Xml;
 using MonoGame.Extended;
 
 namespace PhysicsSim
@@ -23,6 +25,9 @@ namespace PhysicsSim
 		public static Planet newPlanet = new Planet();
 		public static IMode currentMode = new ModeIdle();
 		public static IGridHandler currentMouseMode = new FreeMovement();
+		
+		public static int[] planetMassConstants = new int[] {1, 1, 1};
+		public static string[] planetMassConstantsNames = new string[] {"index", "coefficient", "constant"};
 
 		public Game1()
 		{
@@ -41,6 +46,8 @@ namespace PhysicsSim
 			Window.AllowUserResizing = true;
 			this.IsMouseVisible = true;
 			base.Initialize();
+			
+			Globals.ReadConfig();
 		}
 
 		/// <summary>
@@ -112,6 +119,10 @@ namespace PhysicsSim
 			{
 				spriteBatch.DrawString(textFont, "PAUSED", new Vector2(10, 28), Color.White);
 			}
+			
+			spriteBatch.DrawString(textFont, planetMassConstants[0].ToString(), new Vector2(10, 58), Color.White);
+			spriteBatch.DrawString(textFont, planetMassConstants[1].ToString(), new Vector2(10, 78), Color.White);
+			spriteBatch.DrawString(textFont, planetMassConstants[2].ToString(), new Vector2(10, 98), Color.White);
 			
 			spriteBatch.End();
 			base.Draw(gameTime);

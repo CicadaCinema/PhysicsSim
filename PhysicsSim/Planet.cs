@@ -9,6 +9,7 @@ namespace PhysicsSim
         public int drawLevel = 0;
         Vector2 position;
         public int radius;
+        public int mass;
         Vector2 velocity;
         Vector2 acceleration;
 
@@ -23,6 +24,7 @@ namespace PhysicsSim
                 velocity = Game1.currentMouseVector - position;
             } else if (drawLevel == 3)
             {
+                mass = Convert.ToInt32(Math.Pow(radius, Game1.planetMassConstants[0]))*Game1.planetMassConstants[1] + Game1.planetMassConstants[2];
                 Game1.planets.Add(Game1.newPlanet);
                 Game1.newPlanet = new Planet();
                 Game1.currentMode = new ModeIdle();
@@ -41,7 +43,7 @@ namespace PhysicsSim
                 {
                     if (!Equals(planet, this) && ((planet.position - position).Length() > (planet.radius + radius)))
                     {
-                        float accelerationMagnitude = planet.radius / Vector2.Subtract(planet.position, position).LengthSquared();
+                        float accelerationMagnitude = planet.mass / Vector2.Subtract(planet.position, position).LengthSquared();
                         Vector2 accelerationDirection = planet.position - position;
                         acceleration += accelerationDirection * (accelerationMagnitude / accelerationDirection.Length());
                     }
