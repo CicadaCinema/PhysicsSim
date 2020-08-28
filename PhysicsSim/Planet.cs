@@ -17,17 +17,17 @@ namespace PhysicsSim
         {
             if (drawLevel == 1)
             {
-                position = Game1.currentMouseVector;
-                radius = Convert.ToInt32((Math.Tanh(Game1.currentMouseState.ScrollWheelValue / 1000.0)+1) * 100);
+                position = Simulator.currentMouseVector;
+                radius = Convert.ToInt32((Math.Tanh(Simulator.currentMouseState.ScrollWheelValue / 1000.0)+1) * 100);
             } else if (drawLevel == 2)
             {
-                velocity = Game1.currentMouseVector - position;
+                velocity = Simulator.currentMouseVector - position;
             } else if (drawLevel == 3)
             {
-                mass = Convert.ToInt32(Math.Pow(radius, Game1.planetMassConstants[0]))*Game1.planetMassConstants[1] + Game1.planetMassConstants[2];
-                Game1.planets.Add(Game1.newPlanet);
-                Game1.newPlanet = new Planet();
-                Game1.currentMode = new ModeIdle();
+                mass = Convert.ToInt32(Math.Pow(radius, Globals.massGlobals[0]))*Globals.massGlobals[1] + Globals.massGlobals[2];
+                Simulator.planets.Add(Simulator.newPlanet);
+                Simulator.newPlanet = new Planet();
+                Simulator.currentMode = new ModeIdle();
             }
         }
 
@@ -39,7 +39,7 @@ namespace PhysicsSim
                 // gravity!
                 // acceleration due to gravity = (constant*m)/(r^2) - this does not depend on the mass of the body being accelerated
                 acceleration = new Vector2();
-                foreach (Planet planet in Game1.planets)
+                foreach (Planet planet in Simulator.planets)
                 {
                     if (!Equals(planet, this) && ((planet.position - position).Length() > (planet.radius + radius)))
                     {
@@ -57,8 +57,8 @@ namespace PhysicsSim
             // unless the planet hasn't entered creation mode, draw it at its position
             if (drawLevel > 0)
             {
-                Game1.spriteBatch.DrawCircle(position.X, position.Y, radius, 100, Color.Red, radius);
-                Game1.spriteBatch.DrawLine(position, Vector2.Add(position, velocity), Color.White, 3);
+                Simulator.spriteBatch.DrawCircle(position.X, position.Y, radius, 100, Color.Red, radius);
+                Simulator.spriteBatch.DrawLine(position, Vector2.Add(position, velocity), Color.White, 3);
             }
         }
     }

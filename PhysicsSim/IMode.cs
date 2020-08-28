@@ -16,16 +16,16 @@ namespace PhysicsSim
         {
             if (KeyboardControls.KeyInfo(1) == "just_pressed")
             {
-                Game1.newPlanet = new Planet
+                Simulator.newPlanet = new Planet
                 {
                     drawLevel = 1
                 };
-                Game1.currentMode = new ModeCreatePlanet();
+                Simulator.currentMode = new ModeCreatePlanet();
             }
 
             if (KeyboardControls.KeyInfo(3) == "just_pressed")
             {
-                Game1.planets = new List<Planet>();
+                Simulator.planets = new List<Planet>();
             }
         }
     }
@@ -38,7 +38,7 @@ namespace PhysicsSim
         {
             if (KeyboardControls.KeyInfo(1) == "just_pressed")
             {
-                Game1.newPlanet.drawLevel += 1;
+                Simulator.newPlanet.drawLevel += 1;
             }
         }
     }

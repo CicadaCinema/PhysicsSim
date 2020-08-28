@@ -15,22 +15,22 @@ namespace PhysicsSim
     {
         public static Vector2 RoundMousePosition(float spacing)
         {
-            double x = Math.Round(Game1.currentMouseState.X/spacing) * spacing;
-            double y = Math.Round(Game1.currentMouseState.Y/spacing) * spacing;
+            double x = Math.Round(Simulator.currentMouseState.X/spacing) * spacing;
+            double y = Math.Round(Simulator.currentMouseState.Y/spacing) * spacing;
             return new Vector2(Convert.ToSingle(x), Convert.ToSingle(y));
         }
         public static void Draw(int spacing)
         {
             // draw horizontal gridlines
-            for (int y = 0; y <= Game1.currentWindowHeight; y += spacing)
+            for (int y = 0; y <= Simulator.currentWindowHeight; y += spacing)
             {
-                Game1.spriteBatch.DrawLine(0, y, Game1.currentWindowWidth, y, Color.Green);
+                Simulator.spriteBatch.DrawLine(0, y, Simulator.currentWindowWidth, y, Color.Green);
             }
 				
             // draw horizontal gridlines
-            for (int x = 0; x <= Game1.currentWindowWidth; x += spacing)
+            for (int x = 0; x <= Simulator.currentWindowWidth; x += spacing)
             {
-                Game1.spriteBatch.DrawLine(x, 0, x, Game1.currentWindowHeight, Color.Green);
+                Simulator.spriteBatch.DrawLine(x, 0, x, Simulator.currentWindowHeight, Color.Green);
             }
         }
     }
@@ -39,7 +39,7 @@ namespace PhysicsSim
     {
         public void UpdateMousePosition()
         {
-            Game1.currentMouseVector = new Vector2(Game1.currentMouseState.X, Game1.currentMouseState.Y);
+            Simulator.currentMouseVector = new Vector2(Simulator.currentMouseState.X, Simulator.currentMouseState.Y);
         }
 
         public void DrawGrid()
@@ -54,7 +54,7 @@ namespace PhysicsSim
         {
             // bring these three lines into the gridlines class
 
-            Game1.currentMouseVector = GridLineHelper.RoundMousePosition(20);
+            Simulator.currentMouseVector = GridLineHelper.RoundMousePosition(20);
 
 
         }
@@ -68,7 +68,7 @@ namespace PhysicsSim
     {
         public void UpdateMousePosition()
         {
-            Game1.currentMouseVector = GridLineHelper.RoundMousePosition(50);
+            Simulator.currentMouseVector = GridLineHelper.RoundMousePosition(50);
         }
         public void DrawGrid()
         {

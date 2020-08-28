@@ -9,121 +9,120 @@ using MonoGame.Extended;
 
 namespace PhysicsSim
 {
-	public class Game1 : Game
+	public class Simulator : Game
 	{
+		// graphics and fonts
 		GraphicsDeviceManager graphics;
 		public static SpriteBatch spriteBatch;
 		SpriteFont textFont;
 
+		// window dimensions (these may change during operation)
 		public static int currentWindowWidth;
 		public static int currentWindowHeight;
 		
+		// mouse state and position (inc. scrollwheel data)
 		public static MouseState currentMouseState;
 		public static Vector2 currentMouseVector;
 		
+		// list of already-created planets and a placeholder planet object for creation
 		public static List<Planet> planets = new List<Planet>();
 		public static Planet newPlanet = new Planet();
+		
+		// objects which can be changed programatically
 		public static IMode currentMode = new ModeIdle();
 		public static IGridHandler currentMouseMode = new FreeMovement();
 		
-		public static int[] planetMassConstants = new int[] {1, 1, 1};
-		public static string[] planetMassConstantsNames = new string[] {"index", "coefficient", "constant"};
-
-		public Game1()
+		public Simulator()
 		{
 			graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
 		}
 
-		/// <summary>
-		/// Allows the game to perform any initialization it needs to before starting to run.
-		/// This is where it can query for any required services and load any non-graphic
-		/// related content.  Calling base.Initialize will enumerate through any components
-		/// and initialize them as well.
-		/// </summary>
+		// initialise any non-graphics related content and settings before the simulator starts
 		protected override void Initialize()
 		{
 			Window.AllowUserResizing = true;
 			this.IsMouseVisible = true;
+			// keep running at full speed even when tabbed out
+			InactiveSleepTime = new TimeSpan(0);
 			base.Initialize();
 			
+			// read global config from XML file
 			Globals.ReadConfig();
 		}
 
-		/// <summary>
-		/// LoadContent will be called once per game and is the place to load
-		/// all of your content.
-		/// </summary>
 		protected override void LoadContent()
 		{
-			// Create a new SpriteBatch, which can be used to draw textures.
+			// create a new SpriteBatch, which can be used to draw textures
 			spriteBatch = new SpriteBatch(GraphicsDevice);
-			// Load Arial font for use throughout the UI
+			// load Arial Bold
 			textFont = Content.Load<SpriteFont>("Arial Bold");
-
-			// use this.Content to load your game content here
 		}
 
-		/// <summary>
-		/// UnloadContent will be called once per game and is the place to unload
-		/// game-specific content.
-		/// </summary>
 		protected override void UnloadContent()
 		{
-			// Unload any non ContentManager content here
+			
 		}
 
-		/// <summary>
-		/// Allows the game to run logic such as updating the world,
-		/// checking for collisions, gathering input, and playing audio.
-		/// </summary>
-		/// <param name="gameTime">Provides a snapshot of timing values.</param>
+		// logic is run 60 times per second
 		protected override void Update(GameTime gameTime)
 		{
+			// quit the game if the player requests exit
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
 
-			// Game update logic
 			base.Update(gameTime);
 			
-			// check if user has resized the window
+			// set new window dimensions
 			currentWindowWidth = Window.ClientBounds.Width;
 			currentWindowHeight = Window.ClientBounds.Height;
 
+			// update keyboard state
 			KeyboardControls.UpdateState();
-			KeyboardControls.UpdateGlobalSwitches();
+			KeyboardControls.UpdateSwitches();
+			
+			// update mouse state
 			currentMouseState = Mouse.GetState();
 			currentMouseMode.UpdateMousePosition();
 			
+			// perform any actions in the current mode
 			currentMode.Update();
+			// update the state of the planet in creation
 			newPlanet.CreateUpdate();
 		}
 
-		// Drawing code
-		/// <param name="gameTime">Provides a snapshot of timing values.</param>
+		// graphics are drawn 60 times per second
 		protected override void Draw(GameTime gameTime)
 		{
+			// set background and begin drawing graphics
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 			spriteBatch.Begin();
 			
+			// draw the grid (if applicable)
 			currentMouseMode.DrawGrid();
 
+			// perform the update method on all the planets in the simulation, as well as the planet being created
 			foreach (Planet planet in planets)
 			{
 				planet.Update();
 			}
 			newPlanet.Update();
 			
+			// display the current mode and paused UI
 			spriteBatch.DrawString(textFont, "Mode: " + currentMode.Name, new Vector2(10, 10), Color.White);
 			if (KeyboardControls.pausedMode)
 			{
 				spriteBatch.DrawString(textFont, "PAUSED", new Vector2(10, 28), Color.White);
 			}
+
+			// display some debug information if the debug switch is set
+			if (KeyboardControls.debugView)
+			{
+				spriteBatch.DrawString(textFont, "Game running slowly: " + gameTime.IsRunningSlowly.ToString(), new Vector2(500, 10), Color.White);
+				spriteBatch.DrawString(textFont, "Number of planets: " + planets.Count.ToString(), new Vector2(500, 28), Color.White);
+			}
 			
-			spriteBatch.DrawString(textFont, planetMassConstants[0].ToString(), new Vector2(10, 58), Color.White);
-			spriteBatch.DrawString(textFont, planetMassConstants[1].ToString(), new Vector2(10, 78), Color.White);
-			spriteBatch.DrawString(textFont, planetMassConstants[2].ToString(), new Vector2(10, 98), Color.White);
-			
+			// display the graphics drawn this frame
 			spriteBatch.End();
 			base.Draw(gameTime);
 		}

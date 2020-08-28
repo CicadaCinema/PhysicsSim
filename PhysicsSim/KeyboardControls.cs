@@ -8,14 +8,15 @@ namespace PhysicsSim
     public class KeyboardControls
     {
         // default controls
-        public static Keys[] controls = { Keys.NumPad0, Keys.NumPad1, Keys.NumPad2, Keys.NumPad3 };
-        public static string[] controlNames = { "Pause", "New", "Grid", "Clear" };
+        public static Keys[] controls = { Keys.NumPad0, Keys.NumPad1, Keys.NumPad2, Keys.NumPad3, Keys.NumPad4 };
+        public static string[] controlNames = { "Pause", "New", "Grid", "Clear", "Debug" };
 
         static bool[] currentState = new bool[controls.Length];
         static bool[] previousState = new bool[controls.Length];
         
-        // global switches
+        // switches that can be toggled at any time
         public static bool pausedMode = false;
+        public static bool debugView = false;
         static int gridLineVisibility = 0;
 
         public static void UpdateState()
@@ -27,11 +28,18 @@ namespace PhysicsSim
             }
         }
 
-        public static void UpdateGlobalSwitches()
+        public static void UpdateSwitches()
         {
+            // toggle pausing
             if (KeyInfo(0) == "just_pressed")
             {
                 pausedMode = !pausedMode;
+            }
+            
+            // toggle debug view
+            if (KeyInfo(4) == "just_pressed")
+            {
+                debugView = !debugView;
             }
             
             // cycle through the grid levels
@@ -41,16 +49,16 @@ namespace PhysicsSim
                 switch (gridLineVisibility) 
                 {
                     case 0:
-                        Game1.currentMouseMode = new FreeMovement();
+                        Simulator.currentMouseMode = new FreeMovement();
                         break;
                     case 1:
-                        Game1.currentMouseMode = new SmallGrid();
+                        Simulator.currentMouseMode = new SmallGrid();
                         break;
                     case 2:
-                        Game1.currentMouseMode = new LargeGrid();
+                        Simulator.currentMouseMode = new LargeGrid();
                         break;
                     case 3:
-                        Game1.currentMouseMode = new FreeMovement();
+                        Simulator.currentMouseMode = new FreeMovement();
                         gridLineVisibility = 0;
                         break;
                 }

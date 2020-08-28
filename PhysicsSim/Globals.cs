@@ -6,6 +6,11 @@ namespace PhysicsSim
 {
     class Globals
     {
+        // the default globals for mass calculation
+        public static int[] massGlobals = new int[] {1, 1, 1};
+        static string[] massGlobalsNames = new string[] {"index", "coefficient", "constant"};
+
+        // read the xml config file and update the default global values if needed
         public static void ReadConfig()
         {
             // read bindings and config from xml file
@@ -17,7 +22,9 @@ namespace PhysicsSim
                     {
                         switch (reader.Name)
                         {
+                            // found a key binding
                             case "Binding":
+                                // find 
                                 int bindingIndex = Array.IndexOf(KeyboardControls.controlNames, reader["name"]);
                                 
                                 // if key name valid
@@ -28,13 +35,14 @@ namespace PhysicsSim
                                 }
                                 
                                 break;
+                            // found a global to change planet mass calculation
                             case "PMglobal":
-                                int PMglobalIndex = Array.IndexOf(Game1.planetMassConstantsNames, reader["name"]);
+                                int PMglobalIndex = Array.IndexOf(massGlobalsNames, reader["name"]);
                                 
                                 // if key name valid
                                 if (PMglobalIndex != -1)
                                 {
-                                    Game1.planetMassConstants[PMglobalIndex] = Convert.ToInt32(reader["value"]);
+                                    massGlobals[PMglobalIndex] = Convert.ToInt32(reader["value"]);
                                 }
 
                                 break;
