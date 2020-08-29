@@ -11,60 +11,24 @@ namespace PhysicsSim
         public static Keys[] controls = { Keys.NumPad0, Keys.NumPad1, Keys.NumPad2, Keys.NumPad3, Keys.NumPad4 };
         public static string[] controlNames = { "Pause", "New", "Grid", "Clear", "Debug" };
 
+        // state of the chosen controls this frame and the previous frame
         static bool[] currentState = new bool[controls.Length];
         static bool[] previousState = new bool[controls.Length];
         
-        // switches that can be toggled at any time
-        public static bool pausedMode = false;
-        public static bool debugView = false;
-        static int gridLineVisibility = 0;
-
+        // update the keyboard states
         public static void UpdateState()
         {
+            // make a copy (instead of a reference) to the previous state of the controls
             Array.Copy(currentState, previousState, currentState.Length);
+            // record the new state of the controls
             for (int i = 0; i < controls.Length; i++)
             {
                 currentState[i] = Keyboard.GetState().IsKeyDown(controls[i]);
             }
         }
 
-        public static void UpdateSwitches()
-        {
-            // toggle pausing
-            if (KeyInfo(0) == "just_pressed")
-            {
-                pausedMode = !pausedMode;
-            }
-            
-            // toggle debug view
-            if (KeyInfo(4) == "just_pressed")
-            {
-                debugView = !debugView;
-            }
-            
-            // cycle through the grid levels
-            if (KeyInfo(2) == "just_pressed")
-            {
-                gridLineVisibility += 1;
-                switch (gridLineVisibility) 
-                {
-                    case 0:
-                        Simulator.currentMouseMode = new FreeMovement();
-                        break;
-                    case 1:
-                        Simulator.currentMouseMode = new SmallGrid();
-                        break;
-                    case 2:
-                        Simulator.currentMouseMode = new LargeGrid();
-                        break;
-                    case 3:
-                        Simulator.currentMouseMode = new FreeMovement();
-                        gridLineVisibility = 0;
-                        break;
-                }
-            }
-        }
-
+        // check the state of one key based on its history for the past frame
+        // eg to see if it has just been pressed this frame
         public static string KeyInfo(int key)
         {
             string result = (previousState[key], currentState[key]) switch

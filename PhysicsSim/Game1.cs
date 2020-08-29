@@ -77,9 +77,9 @@ namespace PhysicsSim
 			currentWindowWidth = Window.ClientBounds.Width;
 			currentWindowHeight = Window.ClientBounds.Height;
 
-			// update keyboard state
+			// update keyboard state and switches
 			KeyboardControls.UpdateState();
-			KeyboardControls.UpdateSwitches();
+			Globals.UpdateSwitches();
 			
 			// update mouse state
 			currentMouseState = Mouse.GetState();
@@ -110,13 +110,13 @@ namespace PhysicsSim
 			
 			// display the current mode and paused UI
 			spriteBatch.DrawString(textFont, "Mode: " + currentMode.Name, new Vector2(10, 10), Color.White);
-			if (KeyboardControls.pausedMode)
+			if (Globals.pausedMode)
 			{
 				spriteBatch.DrawString(textFont, "PAUSED", new Vector2(10, 28), Color.White);
 			}
 
 			// display some debug information if the debug switch is set
-			if (KeyboardControls.debugView)
+			if (Globals.debugView)
 			{
 				spriteBatch.DrawString(textFont, "Game running slowly: " + gameTime.IsRunningSlowly.ToString(), new Vector2(500, 10), Color.White);
 				spriteBatch.DrawString(textFont, "Number of planets: " + planets.Count.ToString(), new Vector2(500, 28), Color.White);

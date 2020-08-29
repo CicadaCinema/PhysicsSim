@@ -68,6 +68,7 @@
   <ItemGroup>
     <Content Include="bin\Windows\x86\Debug\config.xml" />
     <Content Include="Icon.ico" />
+    <Content Include="Info.md" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
