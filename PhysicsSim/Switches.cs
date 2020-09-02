@@ -4,13 +4,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace PhysicsSim
 {
-    class Globals
+    class Switches
     {
         // the default globals for mass calculation
         public static int[] massGlobals = new int[] {1, 1, 1};
         static string[] massGlobalsNames = new string[] {"index", "coefficient", "constant"};
         
-        // user-togglable switches
+        // user-toggleable switches
         public static bool pausedMode = false;
         public static bool debugView = false;
         public static int gridLineVisibility = 0;

@@ -30,7 +30,7 @@ namespace PhysicsSim
             } else if (drawLevel == 3)
             {
                 // perform the final mass calculation based on the globals
-                mass = Convert.ToInt32(Math.Pow(radius, Globals.massGlobals[0]))*Globals.massGlobals[1] + Globals.massGlobals[2];
+                mass = Convert.ToInt32(Math.Pow(radius, Switches.massGlobals[0]))*Switches.massGlobals[1] + Switches.massGlobals[2];
                 
                 // export the planet to the main planet list and reset the placeholder planet object and the current mode
                 Simulator.planets.Add(Simulator.newPlanet);
@@ -42,7 +42,7 @@ namespace PhysicsSim
         public void Update()
         {
             // if the planet is on the final drawLevel and the game is unpaused, update its velocity
-            if (drawLevel == 3 && !Globals.pausedMode)
+            if (drawLevel == 3 && !Switches.pausedMode)
             {
                 // GRAVITY!
 
@@ -58,6 +58,7 @@ namespace PhysicsSim
                         // acceleration due to gravity = (constant*m)/(r^2) - this does not depend on the mass of the body being accelerated
                         // TODO: add the gravitational constant to config.xml
                         float accelerationMagnitude = planet.mass / Vector2.Subtract(planet.position, position).LengthSquared();
+                        accelerationMagnitude *= 1000;
                         
                         // the direction of the acceleration is always towards the other planet
                         Vector2 accelerationDirection = planet.position - position;
@@ -68,7 +69,7 @@ namespace PhysicsSim
                 }
                 
                 // scale both acceleration and velocity before applying them to the relevant fields
-                velocity += accelerationThisFrame*1000;
+                velocity += accelerationThisFrame;
                 position += velocity/50;
             }
 			
@@ -76,7 +77,7 @@ namespace PhysicsSim
             if (drawLevel > 0)
             {
                 Simulator.spriteBatch.DrawCircle(position.X, position.Y, radius, 100, Color.Red, radius);
-                if (Globals.debugView)
+                if (Switches.debugView)
                 {
                     // indicate velocity if user is debugging
                     Simulator.spriteBatch.DrawLine(position, Vector2.Add(position, velocity), Color.White, 3);
