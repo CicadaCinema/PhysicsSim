@@ -18,7 +18,7 @@ namespace PhysicsSim
 		
 		// a colour palette for the simulator
 		// TODO: check that only these colours are implemented (+ each planet's individual colour)
-		public static Dictionary<string, Color> colourPalette = new Dictionary<string, Color>(){
+		public static readonly Dictionary<string, Color> colourPalette = new Dictionary<string, Color>(){
 			{"Background", Color.CornflowerBlue},
 			{"Grid", Color.Green},
 			{"UI", Color.White},

@@ -9,7 +9,7 @@ namespace PhysicsSim
         // drawLevel is 0 for a placeholder planet
         public int drawLevel = 0;
         
-        public Color colour = Simulator.colourPalette["New planet"]; // a planet will stay a default colour during creation
+        public Color colour = Simulator.colourPalette["New Planet"]; // a planet will stay a default colour during creation
         public int radius;
         public int mass;
         
@@ -83,11 +83,11 @@ namespace PhysicsSim
                 if (Switches.debugView)
                 {
                     // indicate velocity if user is debugging
-                    Simulator.spriteBatch.DrawLine(position, Vector2.Add(position, velocity), colour, 3);
+                    Simulator.spriteBatch.DrawLine(position, Vector2.Add(position, velocity), Simulator.colourPalette["Debug UI"], 3);
                 } else if (drawLevel == 2)
                 {
                     // if user is still configuring velocity, draw an indicator line of another colour
-                    Simulator.spriteBatch.DrawLine(position, Vector2.Add(position, velocity), colour, 2);
+                    Simulator.spriteBatch.DrawLine(position, Vector2.Add(position, velocity), Simulator.colourPalette["UI"], 2);
                 }
             }
         }
