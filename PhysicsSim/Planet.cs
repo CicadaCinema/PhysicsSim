@@ -18,24 +18,26 @@ namespace PhysicsSim
 
         public void CreateUpdate()
         {
-            if (drawLevel == 1)
+            switch (drawLevel)
             {
-                // update the new planet's radius according to the position of the mouse and the scrollwheel
-                position = Simulator.currentMouseVector;
-                radius = Convert.ToInt32((Math.Tanh(Simulator.currentMouseState.ScrollWheelValue / 1000.0)+1) * 100);
-            } else if (drawLevel == 2)
-            {
-                // update the new planet's velocity according to the position of the mouse
-                velocity = Simulator.currentMouseVector - position;
-            } else if (drawLevel == 3)
-            {
-                // perform the final mass calculation based on the globals
-                mass = Convert.ToInt32(Math.Pow(radius, Switches.massGlobals[0]))*Switches.massGlobals[1] + Switches.massGlobals[2];
-                
-                // export the planet to the main planet list and reset the placeholder planet object and the current mode
-                Simulator.planets.Add(Simulator.newPlanet);
-                Simulator.newPlanet = new Planet();
-                Simulator.currentMode = new ModeIdle();
+                case 1:
+                    // update the new planet's radius according to the position of the mouse and the scrollwheel
+                    position = Simulator.currentMouseVector;
+                    radius = Convert.ToInt32((Math.Tanh(Simulator.currentMouseState.ScrollWheelValue / 1000.0)+1) * 100);
+                    
+                    // perform the mass calculation on-the-fly based on the globals
+                    mass = Convert.ToInt32(Math.Pow(radius, Switches.massGlobals[0]))*Switches.massGlobals[1] + Switches.massGlobals[2];
+                    break;
+                case 2:
+                    // update the new planet's velocity according to the position of the mouse
+                    velocity = Simulator.currentMouseVector - position;
+                    break;
+                case 3:
+                    // export the planet to the main planet list and reset the placeholder planet object and the current mode
+                    Simulator.planets.Add(Simulator.newPlanet);
+                    Simulator.newPlanet = new Planet();
+                    Simulator.currentMode = new ModeIdle();
+                    break;
             }
         }
 

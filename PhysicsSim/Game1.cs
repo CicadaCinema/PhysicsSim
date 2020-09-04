@@ -109,17 +109,26 @@ namespace PhysicsSim
 			newPlanet.Update();
 			
 			// display the current mode and paused UI
+			// 18 is a comfortable value for line spacing
 			spriteBatch.DrawString(textFont, "Mode: " + currentMode.Name, new Vector2(10, 10), Color.White);
 			if (Switches.pausedMode)
 			{
-				spriteBatch.DrawString(textFont, "PAUSED", new Vector2(10, 28), Color.White);
+				spriteBatch.DrawString(textFont, "PAUSED", new Vector2(10, 10 + 1*18), Color.White);
 			}
 
 			// display some debug information if the debug switch is set
+			// 18 is a comfortable value for line spacing
 			if (Switches.debugView)
 			{
-				spriteBatch.DrawString(textFont, "Game running slowly: " + gameTime.IsRunningSlowly.ToString(), new Vector2(500, 10), Color.White);
-				spriteBatch.DrawString(textFont, "Number of planets: " + planets.Count.ToString(), new Vector2(500, 28), Color.White);
+				spriteBatch.DrawString(textFont, "Game running slowly: " + gameTime.IsRunningSlowly.ToString(), new Vector2(10, currentWindowHeight - 24), Color.DarkBlue);
+				spriteBatch.DrawString(textFont, "Number of planets: " + planets.Count.ToString(), new Vector2(10, currentWindowHeight - 24 -1*18), Color.DarkBlue);
+				
+				// display the new planet's mass and radius if it is being created
+				if (newPlanet.drawLevel > 0)
+				{
+					spriteBatch.DrawString(textFont, "Mass: " + newPlanet.mass, new Vector2(10, currentWindowHeight - 24 -2*18), Color.DarkBlue);
+					spriteBatch.DrawString(textFont, "Radius: " + newPlanet.radius, new Vector2(10, currentWindowHeight - 24 -3*18), Color.DarkBlue);
+				}
 			}
 			
 			// display the graphics drawn this frame
