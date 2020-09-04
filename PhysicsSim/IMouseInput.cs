@@ -64,7 +64,7 @@ namespace PhysicsSim
         public void DrawGrid()
         {
             // draw a small grid
-            GridLineHelper.Draw(20, Simulator.currentWindowWidth, Simulator.currentWindowHeight, Color.Green);
+            GridLineHelper.Draw(20, Simulator.currentWindowWidth, Simulator.currentWindowHeight, Simulator.colourPalette["Grid"]);
         }
     }
     
@@ -78,7 +78,7 @@ namespace PhysicsSim
         public void DrawGrid()
         {
             // draw a large grid
-            GridLineHelper.Draw(50, Simulator.currentWindowWidth, Simulator.currentWindowHeight, Color.Green);
+            GridLineHelper.Draw(50, Simulator.currentWindowWidth, Simulator.currentWindowHeight, Simulator.colourPalette["Grid"]);
         }
     }
 }

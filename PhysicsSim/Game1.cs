@@ -15,6 +15,16 @@ namespace PhysicsSim
 		GraphicsDeviceManager graphics;
 		public static SpriteBatch spriteBatch;
 		SpriteFont textFont;
+		
+		// a colour palette for the simulator
+		// TODO: check that only these colours are implemented (+ each planet's individual colour)
+		public static Dictionary<string, Color> colourPalette = new Dictionary<string, Color>(){
+			{"Background", Color.CornflowerBlue},
+			{"Grid", Color.Green},
+			{"UI", Color.White},
+			{"Debug UI", Color.DarkBlue},
+			{"New Planet", Color.Red}
+		};
 
 		// window dimensions (these may change during operation)
 		public static int currentWindowWidth;
@@ -95,7 +105,7 @@ namespace PhysicsSim
 		protected override void Draw(GameTime gameTime)
 		{
 			// set background and begin drawing graphics
-			GraphicsDevice.Clear(Color.CornflowerBlue);
+			GraphicsDevice.Clear(colourPalette["Background"]);
 			spriteBatch.Begin();
 			
 			// draw the grid (if applicable)
@@ -110,24 +120,24 @@ namespace PhysicsSim
 			
 			// display the current mode and paused UI
 			// 18 is a comfortable value for line spacing
-			spriteBatch.DrawString(textFont, "Mode: " + currentMode.Name, new Vector2(10, 10), Color.White);
+			spriteBatch.DrawString(textFont, "Mode: " + currentMode.Name, new Vector2(10, 10), colourPalette["UI"]);
 			if (Switches.pausedMode)
 			{
-				spriteBatch.DrawString(textFont, "PAUSED", new Vector2(10, 10 + 1*18), Color.White);
+				spriteBatch.DrawString(textFont, "PAUSED", new Vector2(10, 10 + 1*18), colourPalette["UI"]);
 			}
 
 			// display some debug information if the debug switch is set
 			// 18 is a comfortable value for line spacing
 			if (Switches.debugView)
 			{
-				spriteBatch.DrawString(textFont, "Game running slowly: " + gameTime.IsRunningSlowly.ToString(), new Vector2(10, currentWindowHeight - 24), Color.DarkBlue);
-				spriteBatch.DrawString(textFont, "Number of planets: " + planets.Count.ToString(), new Vector2(10, currentWindowHeight - 24 -1*18), Color.DarkBlue);
+				spriteBatch.DrawString(textFont, "Game running slowly: " + gameTime.IsRunningSlowly.ToString(), new Vector2(10, currentWindowHeight - 24), colourPalette["Debug UI"]);
+				spriteBatch.DrawString(textFont, "Number of planets: " + planets.Count.ToString(), new Vector2(10, currentWindowHeight - 24 -1*18), colourPalette["Debug UI"]);
 				
 				// display the new planet's mass and radius if it is being created
 				if (newPlanet.drawLevel > 0)
 				{
-					spriteBatch.DrawString(textFont, "Mass: " + newPlanet.mass, new Vector2(10, currentWindowHeight - 24 -2*18), Color.DarkBlue);
-					spriteBatch.DrawString(textFont, "Radius: " + newPlanet.radius, new Vector2(10, currentWindowHeight - 24 -3*18), Color.DarkBlue);
+					spriteBatch.DrawString(textFont, "Mass: " + newPlanet.mass, new Vector2(10, currentWindowHeight - 24 -2*18), colourPalette["Debug UI"]);
+					spriteBatch.DrawString(textFont, "Radius: " + newPlanet.radius, new Vector2(10, currentWindowHeight - 24 -3*18), colourPalette["Debug UI"]);
 				}
 			}
 			
