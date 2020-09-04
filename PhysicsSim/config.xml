@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Config>
+    <Binding name="Pause" key="NumPad0" />
+    <Binding name="New" key="NumPad1" />
+    <Binding name="Grid" key="NumPad2" />
+    <Binding name="Clear" key="NumPad3" />
+    <Binding name="Debug" key="NumPad4" />
+    <PMglobal name="index" value="1" />
+    <PMglobal name="coefficient" value="1" />
+    <PMglobal name="constant" value="0" />
+    <Gglobal name="constant" value="1000" />
+</Config>

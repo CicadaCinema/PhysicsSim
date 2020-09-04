@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Windows\x86\Debug\config.xml" />
+    <Content Include="config.xml" />
     <Content Include="Icon.ico" />
     <Content Include="Info.md" />
   </ItemGroup>
@@ -84,4 +85,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <!-- CUSTOM PROPERTY - COPY config.xml TO BUILD DIRECTORY -->
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="config.xml" DestinationFolder="$(OutputPath)" ContinueOnError="false" />
+  </Target>
 </Project>
