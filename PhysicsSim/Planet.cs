@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 
@@ -34,6 +35,9 @@ namespace PhysicsSim
                     velocity = Simulator.currentMouseVector - position;
                     break;
                 case 3:
+                    // set the planet's colour to some bright colour
+                    colour = new Color(Simulator.rng.Next(100,256), Simulator.rng.Next(100,256), Simulator.rng.Next(100,256));
+                    
                     // export the planet to the main planet list and reset the placeholder planet object and the current mode
                     Simulator.planets.Add(Simulator.newPlanet);
                     Simulator.newPlanet = new Planet();

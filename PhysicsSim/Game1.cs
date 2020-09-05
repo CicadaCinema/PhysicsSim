@@ -24,6 +24,9 @@ namespace PhysicsSim
 			{"Debug UI", Color.DarkBlue},
 			{"New Planet", Color.Red}
 		};
+		
+		// random number generator used to generate a random colour for each planet
+		public static Random rng = new Random();
 
 		// window dimensions (these may change during operation)
 		public static int currentWindowWidth;
