@@ -139,8 +139,16 @@ namespace PhysicsSim
 				// display the new planet's mass and radius if it is being created
 				if (newPlanet.drawLevel > 0)
 				{
-					spriteBatch.DrawString(textFont, "Mass: " + newPlanet.mass, new Vector2(10, currentWindowHeight - 24 -2*18), colourPalette["Debug UI"]);
-					spriteBatch.DrawString(textFont, "Radius: " + newPlanet.radius, new Vector2(10, currentWindowHeight - 24 -3*18), colourPalette["Debug UI"]);
+					// store this debug info in an array
+					string[] newPlanetDebugInfo = {"Mass: " + newPlanet.mass, "Radius: " + newPlanet.radius, "Position (X): " + newPlanet.position.X, "Position (Y): " + newPlanet.position.Y};
+					int DebugInfoHeight = currentWindowHeight - 24 - 3*18;
+					
+					// display each element of the array at an appropriate height
+					foreach (string newPlanetDebugLine in newPlanetDebugInfo)
+					{
+						spriteBatch.DrawString(textFont, newPlanetDebugLine, new Vector2(10, DebugInfoHeight), colourPalette["Debug UI"]);
+						DebugInfoHeight -= 18;
+					}
 				}
 			}
 			

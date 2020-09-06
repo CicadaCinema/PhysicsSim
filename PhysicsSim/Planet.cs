@@ -16,7 +16,7 @@ namespace PhysicsSim
         public int radius;
         public int mass;
         
-        Vector2 position;
+        public Vector2 position;
         Vector2 velocity;
         Vector2 accelerationThisFrame; // acceleration is calculated anew for each frame
         
