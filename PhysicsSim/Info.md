@@ -1,13 +1,14 @@
 PhysicsSim is a customisable simulation of gravitational interactions between 'planets' depicted on a 2D plane. The simulation is controlled via a series of shortcut keys (these are remappable with a config file) and the cursor. It uses object-oriented programming techniques to remain efficient, despite having O(n^2) complexity. It runs at a fixed time step (60 Hz) and doesn't slow down even with a large number of planets on a modern processor. The simulation itself was constructed with care to improve efficiency and readability of the code, but no optimisation is done on the gravitational calculation, although this is possible.
 
 ### Controls
-| Action | Key (default) | Description                     |
-|--------|---------------|---------------------------------|
-| Pause  | NumPad0       | Pause the simulation            |
-| New    | NumPad1       | Advance planet creation         |
-| Grid   | NumPad2       | Toggle between three grid modes |
-| Clear  | NumPad3       | Clear existing planets          |
-| Debug  | NumPad4       | Toggle debug view               |
+| Action | Key (default) | Description                       |
+|--------|---------------|-----------------------------------|
+| Pause  | NumPad0       | Pause the simulation              |
+| New    | NumPad1       | Advance planet creation           |
+| Grid   | NumPad2       | Toggle between three grid modes   |
+| Clear  | NumPad3       | Clear existing planets            |
+| Debug  | NumPad4       | Toggle debug view                 |
+| Trail  | NumPad5       | Toggle visibility of planet trails|
 
 The following is a the list of customisable keyboard shortcuts used to control the simulation. `config.xml` contains these default key bindings in a format understood by the simulator. Any shortcut key can be remapped by replacing the `key` attribute with a valid keycode. An extensive list can be found [here](https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.keys?view=netframework-4.7.2#fields); a single capital letter denotes the corresponding letter on the keyboard, D* denotes a digit in the top row (where * is replaced by the intended digit) and NumPad* denotes a digit on the number pad (where * is replaced by the intended digit).
 
@@ -28,7 +29,7 @@ It was clear that a project like this would benefit greatly from an OOP approach
 
 ### OOP implementation
 
-However, one must recognise that not all concepts relating to object-oriented design were strictly followed. For example, very few fields are encapsulated in each class, meaning that quite a lot of them are necessary to be made accessible to other classes for various purposes. UI doesn't play a huge role here, so the on-screen elements are drawn directly in the `Simulator` class, requiring rather low-level access to the `Planet` class for details such as a planet's radius and position in case the debug switch is turned on by the user. One could move the drawing of these two particular elements to the `Planet` class, but this would separate these lines from the rest of the code which is responsible for drawing more general debug information such as the number of planets and whether the simulator is reaching its framerate goal. A whole separate class could be created solely for the purpose of drawing UI elements, but that wouldn't solve the issue of encapsulation as this class would still have to have the same amount of low-level access to the `Planet` class for displaying this debug information.
+However, one must recognise that not all concepts relating to object-oriented design were strictly followed. For example, few fields are encapsulated in each class, meaning that quite a lot of them are necessary to be made accessible to other classes for various purposes. UI doesn't play a huge role here, so the on-screen elements are drawn directly in the `Simulator` class, requiring rather low-level access to the `Planet` class for details such as a planet's radius and position in case the debug switch is turned on by the user. One could move the drawing of these two particular elements to the `Planet` class, but this would separate these lines from the rest of the code which is responsible for drawing more general debug information such as the number of planets and whether the simulator is reaching its framerate goal. A whole separate class could be created solely for the purpose of drawing UI elements, but that wouldn't solve the issue of encapsulation as this class would still have to have the same amount of low-level access to the `Planet` class for displaying this debug information. Despite this, a few fields are in fact properly encapsulated, such as those responsible for storing the trail of the planet, and its current position and velocity - the methods which require those fields are already in the `Planet` class.
 
 On the other hand, the `Planet` class requires access to the main spriteBatch (`Simulator.spriteBatch`) for drawing itself on every frame. Here, both classes must have public/static elements to be able to perform their duties in the correct method, according to their purpose, as opposed to what the scope/hierarchy allows. At least this makes the simulator more maintainable, by allowing similar functionality to be achieved in the same method, regardless of scope.
 

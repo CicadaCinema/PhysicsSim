@@ -8,13 +8,20 @@ namespace PhysicsSim
     {
         // the default globals for mass calculation
         // TODO: change this to a dictionary... possibly
+        // TODO: the names fon't need to be static?
         public static int[] massGlobals = new int[] {1, 1, 1};
         static string[] massGlobalsNames = new string[] {"index", "coefficient", "constant"};
+        
+        // TODO: add gravity constant finally!!!!
+        
+        // trail duration (seconds)
+        public static int trailDuration = 600;
         
         // user-toggleable switches
         public static bool pausedMode = false;
         public static bool debugView = false;
         public static int gridLineVisibility = 0;
+        public static bool trailVisibility = false;
 
         // read the xml config file and update the default global values if needed
         public static void ReadConfig()
@@ -56,6 +63,12 @@ namespace PhysicsSim
                                 }
 
                                 break;
+                            // found a global to change trail duration
+                            case "Tglobal":
+                                // convert value from seconds to frames
+                                trailDuration = Convert.ToInt32(reader["value"]) * 60;
+
+                                break;
                         }
                     }
                 }
@@ -75,6 +88,12 @@ namespace PhysicsSim
             if (KeyboardControls.KeyInfo(4) == "just_pressed")
             {
                 debugView = !debugView;
+            }
+            
+            // toggle trail visibility
+            if (KeyboardControls.KeyInfo(5) == "just_pressed")
+            {
+                trailVisibility = !trailVisibility;
             }
             
             // cycle through the grid levels

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using MonoGame.Extended;
 
 namespace PhysicsSim
@@ -17,6 +19,9 @@ namespace PhysicsSim
         Vector2 position;
         Vector2 velocity;
         Vector2 accelerationThisFrame; // acceleration is calculated anew for each frame
+        
+        // stores the co-ordinates of points making up this planet's trail
+        List<short[]> trail = new List<short[]>();
 
         public void CreateUpdate()
         {
@@ -48,7 +53,7 @@ namespace PhysicsSim
 
         public void Update()
         {
-            // if the planet is on the final drawLevel and the game is unpaused, update its velocity
+            // if the planet is on the final drawLevel and the game is unpaused, update its position and velocity
             if (drawLevel == 3 && !Switches.pausedMode)
             {
                 // GRAVITY!
@@ -78,20 +83,41 @@ namespace PhysicsSim
                 // scale both acceleration and velocity before applying them to the relevant fields
                 velocity += accelerationThisFrame;
                 position += velocity/50;
+                
+                // add the current position of the planet to its trail
+                trail.Add(new short[2] {Convert.ToInt16(position.X), Convert.ToInt16(position.Y)});
+                
+                // remove the oldest element of the trail if it is too long
+                if (trail.Count > Switches.trailDuration)
+                {
+                    trail.RemoveAt(0);
+                }
             }
 			
             // unless the planet hasn't entered creation mode, draw it at its position
             if (drawLevel > 0)
             {
                 Simulator.spriteBatch.DrawCircle(position.X, position.Y, radius, 100, colour, radius);
+                
+                // indicate velocity in the correct style
                 if (Switches.debugView)
                 {
-                    // indicate velocity if user is debugging
+                    // if user is debugging
                     Simulator.spriteBatch.DrawLine(position, Vector2.Add(position, velocity), Simulator.colourPalette["Debug UI"], 3);
                 } else if (drawLevel == 2)
                 {
-                    // if user is still configuring velocity, draw an indicator line of another colour
+                    // if user is still configuring velocity
                     Simulator.spriteBatch.DrawLine(position, Vector2.Add(position, velocity), Simulator.colourPalette["UI"], 2);
+                }
+                
+                // if the planet is fully drawn
+                if (drawLevel == 3 && Switches.trailVisibility)
+                {
+                    // draw its entire trail
+                    foreach (short[] trailElement in trail)
+                    {
+                        Simulator.spriteBatch.DrawPoint(trailElement[0], trailElement[1], Simulator.colourPalette["Trails"]);
+                    }
                 }
             }
         }

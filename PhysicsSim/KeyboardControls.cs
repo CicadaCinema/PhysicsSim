@@ -8,8 +8,8 @@ namespace PhysicsSim
     public class KeyboardControls
     {
         // default controls
-        public static Keys[] controls = { Keys.NumPad0, Keys.NumPad1, Keys.NumPad2, Keys.NumPad3, Keys.NumPad4 };
-        public static string[] controlNames = { "Pause", "New", "Grid", "Clear", "Debug" };
+        public static Keys[] controls = { Keys.NumPad0, Keys.NumPad1, Keys.NumPad2, Keys.NumPad3, Keys.NumPad4, Keys.NumPad5 };
+        public static string[] controlNames = { "Pause", "New", "Grid", "Clear", "Debug", "Trail" };
 
         // state of the chosen controls this frame and the previous frame
         static bool[] currentState = new bool[controls.Length];

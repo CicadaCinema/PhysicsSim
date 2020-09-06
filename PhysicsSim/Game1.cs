@@ -22,7 +22,8 @@ namespace PhysicsSim
 			{"Grid", Color.Green},
 			{"UI", Color.White},
 			{"Debug UI", Color.DarkBlue},
-			{"New Planet", Color.Red}
+			{"New Planet", Color.Red},
+			{"Trails", Color.Yellow}
 		};
 		
 		// random number generator used to generate a random colour for each planet
