@@ -68,9 +68,10 @@ namespace PhysicsSim
                     if (!Equals(planet, this) && ((planet.position - position).Length() > (planet.radius + radius)))
                     {
                         // acceleration due to gravity = (constant*m)/(r^2) - this does not depend on the mass of the body being accelerated
-                        // TODO: add the gravitational constant to config.xml
                         float accelerationMagnitude = planet.mass / Vector2.Subtract(planet.position, position).LengthSquared();
-                        accelerationMagnitude *= 1000;
+                        
+                        // apply gravitational constant
+                        accelerationMagnitude *= Switches.gravitationalConstant;
                         
                         // the direction of the acceleration is always towards the other planet
                         Vector2 accelerationDirection = planet.position - position;

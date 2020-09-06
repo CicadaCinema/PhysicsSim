@@ -9,6 +9,6 @@
     <PMglobal name="index" value="1" />
     <PMglobal name="coefficient" value="1" />
     <PMglobal name="constant" value="0" />
-    <Gglobal name="constant" value="1000" />
+    <Gglobal value="1000" />
     <Tglobal value="10" />
 </Config>

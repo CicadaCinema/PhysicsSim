@@ -12,11 +12,10 @@ namespace PhysicsSim
         public static int[] massGlobals = new int[] {1, 1, 1};
         static string[] massGlobalsNames = new string[] {"index", "coefficient", "constant"};
         
-        // TODO: add gravity constant finally!!!!
-        
-        // trail duration (seconds)
-        public static int trailDuration = 600;
-        
+        // other globals
+        public static int trailDuration = 600; // measured in frames
+        public static int gravitationalConstant = 1000;
+
         // user-toggleable switches
         public static bool pausedMode = false;
         public static bool debugView = false;
@@ -61,6 +60,12 @@ namespace PhysicsSim
                                     // replace the default global at that position
                                     massGlobals[PMglobalIndex] = Convert.ToInt32(reader["value"]);
                                 }
+
+                                break;
+                            // found a global responsible for the gravitational constant
+                            case "Gglobal":
+                                // convert value from seconds to frames
+                                gravitationalConstant = Convert.ToInt32(reader["value"]);
 
                                 break;
                             // found a global to change trail duration
