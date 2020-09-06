@@ -1,14 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Config>
-    <Binding name="Pause" key="NumPad0" />
-    <Binding name="New" key="NumPad1" />
-    <Binding name="Grid" key="NumPad2" />
-    <Binding name="Clear" key="NumPad3" />
-    <Binding name="Debug" key="NumPad4" />
-    <Binding name="Trail" key="NumPad5" />
-    <PMglobal name="index" value="1" />
-    <PMglobal name="coefficient" value="1" />
-    <PMglobal name="constant" value="0" />
-    <Gglobal value="1000" />
-    <Tglobal value="10" />
+    <Bindings>
+        <Binding name="Pause" key="NumPad0" />
+        <Binding name="New" key="NumPad1" />
+        <Binding name="Grid" key="NumPad2" />
+        <Binding name="Clear" key="NumPad3" />
+        <Binding name="Debug" key="NumPad4" />
+        <Binding name="Trail" key="NumPad5" />
+    </Bindings>
+    <Globals>
+        <PMglobal name="index" value="1" />
+        <PMglobal name="coefficient" value="10" />
+        <PMglobal name="constant" value="0" />
+        <Gglobal value="1000" />
+        <Tglobal value="10" />
+    </Globals>
 </Config>
