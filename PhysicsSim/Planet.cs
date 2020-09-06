@@ -17,7 +17,7 @@ namespace PhysicsSim
         public int mass;
         
         public Vector2 position;
-        Vector2 velocity;
+        public Vector2 velocity;
         Vector2 accelerationThisFrame; // acceleration is calculated anew for each frame
         
         // stores the co-ordinates of points making up this planet's trail
@@ -101,14 +101,14 @@ namespace PhysicsSim
                 Simulator.spriteBatch.DrawCircle(position.X, position.Y, radius, 100, colour, radius);
                 
                 // indicate velocity in the correct style
-                if (Switches.debugView)
-                {
-                    // if user is debugging
-                    Simulator.spriteBatch.DrawLine(position, Vector2.Add(position, velocity), Simulator.colourPalette["Debug UI"], 3);
-                } else if (drawLevel == 2)
+                if (drawLevel == 2)
                 {
                     // if user is still configuring velocity
                     Simulator.spriteBatch.DrawLine(position, Vector2.Add(position, velocity), Simulator.colourPalette["UI"], 2);
+                } else if (Switches.debugView)
+                {
+                    // if user is debugging
+                    Simulator.spriteBatch.DrawLine(position, Vector2.Add(position, velocity), Simulator.colourPalette["Debug UI"], 3);
                 }
                 
                 // if the planet is fully drawn

@@ -18,12 +18,12 @@ namespace PhysicsSim
 		
 		// a colour palette for the simulator
 		public static readonly Dictionary<string, Color> colourPalette = new Dictionary<string, Color>(){
-			{"Background", Color.CornflowerBlue},
-			{"Grid", Color.Green},
-			{"UI", Color.White},
-			{"Debug UI", Color.DarkBlue},
-			{"New Planet", Color.Red},
-			{"Trails", Color.Yellow}
+			{"Background", Color.DarkSlateGray},
+			{"Grid", Color.Gray},
+			{"UI", Color.LightBlue},
+			{"Debug UI", Color.LightBlue},
+			{"New Planet", Color.DarkRed},
+			{"Trails", Color.LightGreen}
 		};
 		
 		// random number generator used to generate a random colour for each planet
@@ -140,14 +140,22 @@ namespace PhysicsSim
 				if (newPlanet.drawLevel > 0)
 				{
 					// store this debug info in an array
-					string[] newPlanetDebugInfo = {"Mass: " + newPlanet.mass, "Radius: " + newPlanet.radius, "Position (X): " + newPlanet.position.X, "Position (Y): " + newPlanet.position.Y};
-					int DebugInfoHeight = currentWindowHeight - 24 - 3*18;
+					string[] newPlanetDebugInfo =
+					{
+						"Mass: " + newPlanet.mass,
+						"Radius: " + newPlanet.radius,
+						"Position (X component): " + newPlanet.position.X,
+						"Position (Y component): " + newPlanet.position.Y,
+						"Velocity (X component): " + newPlanet.velocity.X,
+						"Velocity (Y component): " + newPlanet.velocity.Y
+					};
+					int debugInfoHeight = currentWindowHeight - 24 - 3*18;
 					
 					// display each element of the array at an appropriate height
 					foreach (string newPlanetDebugLine in newPlanetDebugInfo)
 					{
-						spriteBatch.DrawString(textFont, newPlanetDebugLine, new Vector2(10, DebugInfoHeight), colourPalette["Debug UI"]);
-						DebugInfoHeight -= 18;
+						spriteBatch.DrawString(textFont, newPlanetDebugLine, new Vector2(10, debugInfoHeight), colourPalette["Debug UI"]);
+						debugInfoHeight -= 18;
 					}
 				}
 			}
