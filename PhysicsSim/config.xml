@@ -10,7 +10,7 @@
     </Bindings>
     <Globals>
         <PMglobal name="index" value="1" />
-        <PMglobal name="coefficient" value="10" />
+        <PMglobal name="coefficient" value="1" />
         <PMglobal name="constant" value="0" />
         <Gglobal value="1000" />
         <Tglobal value="10" />

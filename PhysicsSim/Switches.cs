@@ -7,8 +7,6 @@ namespace PhysicsSim
     class Switches
     {
         // the default globals for mass calculation
-        // TODO: change this to a dictionary... possibly
-        // TODO: the names fon't need to be static?
         public static int[] massGlobals = new int[] {1, 1, 1};
         static string[] massGlobalsNames = new string[] {"index", "coefficient", "constant"};
         
