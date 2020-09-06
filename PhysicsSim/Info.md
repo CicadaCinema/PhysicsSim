@@ -12,6 +12,10 @@ PhysicsSim is a customisable simulation of gravitational interactions between 'p
 
 The following is a the list of customisable keyboard shortcuts used to control the simulation. `config.xml` contains these default key bindings in a format understood by the simulator. Any shortcut key can be remapped by replacing the `key` attribute with a valid keycode. An extensive list can be found [here](https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.keys?view=netframework-4.7.2#fields); a single capital letter denotes the corresponding letter on the keyboard, D* denotes a digit in the top row (where * is replaced by the intended digit) and NumPad* denotes a digit on the number pad (where * is replaced by the intended digit).
 
+### Customisation
+
+Aside from containing the key bindings, the `config.xml` file also has a few global values which can be changed before the simulation is run. ...
+
 ### Intended use
 The simulation is intended to be used as a demonstration of gravitational interactions between bodies and not as a general-purpose physics simulation. For this reason there is only basic collision detection, which aims to maintain the course of the colliding planets by ignoring the gravitational force between any two planets which intersect one another. this feature only exists so that the simulation is not ruined by the centres of two planets approaching each other in such a way as to produce a huge force on both planets, sending them out of view. This workaround allows two planets to briefly touch without interrupting the either of their orbits.
 
@@ -38,4 +42,4 @@ Git was used in the form of a GitHub plugin to maintain a record of changes and 
 
 ### Future improvements
 
-The most likely improvement to the simulator would be the addition of more features to allow analysis of the planet's paths... ACTUALLY IMPLEMENT THIS??
+The most likely improvement to the simulator would be the addition of more features to allow analysis of the planet's paths, aside from the basic feature of seeing the planet's trailing path. ...
