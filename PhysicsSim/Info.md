@@ -1,14 +1,14 @@
 PhysicsSim is a customisable simulation of gravitational interactions between 'planets' depicted on a 2D plane. The simulation is controlled via a series of shortcut keys (these are remappable with a config file) and the cursor. It uses object-oriented programming techniques to remain efficient, despite having O(n^2) complexity. It runs at a fixed time step (60 Hz) and doesn't slow down even with a large number of planets on a modern processor. The simulation itself was constructed with care to improve efficiency and readability of the code, but no optimisation is done on the gravitational calculation, although this is possible.
 
 ### Controls
-| Action | Key (default) | Description                       |
-|--------|---------------|-----------------------------------|
-| Pause  | NumPad0       | Pause the simulation              |
-| New    | NumPad1       | Advance planet creation           |
-| Grid   | NumPad2       | Toggle between three grid modes   |
-| Clear  | NumPad3       | Clear existing planets            |
-| Debug  | NumPad4       | Toggle debug view                 |
-| Trail  | NumPad5       | Toggle visibility of planet trails|
+| Action | Key (default) | Description                                  |
+|--------|---------------|----------------------------------------------|
+| Pause  | NumPad0       | Pause the simulation                         |
+| New    | NumPad1       | Advance planet creation                      |
+| Grid   | NumPad2       | Toggle between three grid modes              |
+| Clear  | NumPad3       | Clear existing planets/cancel planet creation|
+| Debug  | NumPad4       | Toggle debug view                            |
+| Trail  | NumPad5       | Toggle visibility of planet trails           |
 
 The following is a the list of customisable keyboard shortcuts used to control the simulation. `config.xml` contains these default key bindings in a format understood by the simulator. Any shortcut key can be remapped by replacing the `key` attribute with a valid keycode. An extensive list can be found [here](https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.keys?view=netframework-4.7.2#fields); a single capital letter denotes the corresponding letter on the keyboard, D* denotes a digit in the top row (where * is replaced by the intended digit) and NumPad* denotes a digit on the number pad (where * is replaced by the intended digit).
 

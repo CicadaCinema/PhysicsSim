@@ -42,10 +42,17 @@ namespace PhysicsSim
 
         public void Update()
         {
-            // let the user increase the drawLevel by 1 when needed
+            // allow user to increase the drawLevel by 1 when needed
             if (KeyboardControls.KeyInfo(1) == "just_pressed")
             {
                 Simulator.newPlanet.drawLevel += 1;
+            }
+            
+            // allow user to cancel planet creation
+            if (KeyboardControls.KeyInfo(3) == "just_pressed")
+            {
+                Simulator.newPlanet = new Planet();
+                Simulator.currentMode = new ModeIdle();
             }
         }
     }
