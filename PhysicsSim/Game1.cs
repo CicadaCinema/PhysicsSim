@@ -130,10 +130,10 @@ namespace PhysicsSim
 			}
 
 			// display some debug information if the debug switch is set
-			// 18 is a comfortable value for line spacing
 			if (Switches.debugView)
 			{
-				spriteBatch.DrawString(textFont, "Game running slowly: " + gameTime.IsRunningSlowly.ToString(), new Vector2(10, currentWindowHeight - 24), colourPalette["Debug UI"]);
+				// 18 is a comfortable value for line spacing
+				spriteBatch.DrawString(textFont, "Failing framerate target: " + gameTime.IsRunningSlowly.ToString(), new Vector2(10, currentWindowHeight - 24), colourPalette["Debug UI"]);
 				spriteBatch.DrawString(textFont, "Number of planets: " + planets.Count.ToString(), new Vector2(10, currentWindowHeight - 24 -1*18), colourPalette["Debug UI"]);
 				
 				// display the new planet's mass and radius if it is being created

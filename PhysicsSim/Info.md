@@ -1,6 +1,6 @@
 # PhysicsSim - a configurable gravity sandbox
 
-PhysicsSim is a customisable simulation of gravitational interactions between 'planets' depicted on a 2D plane. The simulation is controlled via a series of shortcut keys, remappable with a config file, the cursor and a scrollwheel (or gestures imitating scrolling). It uses object-oriented programming techniques to remain efficient, despite having O(n^2) complexity. It runs at a fixed time step (60 Hz) and doesn't slow down even with a large number of planets on a modern processor. The simulation itself was constructed with care to improve efficiency and readability of the code, but no optimisation is done on the gravitational calculation, although this is possible by using clustering of planets, for example.
+PhysicsSim is a customisable simulation of gravitational interactions between 'planets' depicted on a 2D plane. The simulation is controlled via a series of shortcut keys, remappable with a config file, the cursor and a scrollwheel (or gestures imitating scrolling). It uses object-oriented programming techniques to remain efficient, despite having O(n^2) complexity due to calculation of gravitational forces on every pair of planets. It runs at a fixed time step (60 Hz) and doesn't slow down on a modern processor, even with a large number of planets. The simulation itself was constructed with care to improve efficiency and readability of the code, but no optimisation is done on the gravitational calculation, although this is possible by using clustering of planets, for example.
 
 ## Customisation
 
@@ -27,9 +27,9 @@ Aside from containing the key bindings, the `config.xml` file also permits the u
 
 `Gglobal` (gravitational global) stores the value of the gravitational constant (G) used in the simulation.
  
-`Tglobal` (trail global) represents the number of seconds that are recorded as part of each planet's trail (trails are hidden by default and are toggleable by the 'Trail' shortcut).
+`Tglobal` (trail global) represents the number of seconds that are recorded as part of each planet's trail; trails are hidden by default and are toggleable by the 'Trail' shortcut.
  
-The mass of each planet is calculated according to the following `PMglobal` (planet mass global) values, making a crucial (yet configurable) link between the apparent size of a planet and its mass:
+The mass of each planet is calculated according to the following `PMglobal` (planet mass global) values, making a crucial yet configurable link between the size of a planet and its mass:
 
 `mass = (radius ^ index) * coefficient + constant`
 
@@ -43,7 +43,7 @@ There is little UI to introduce the user to the simulator and its operation: dev
 
 ## Role of object-oriented programming (OOP)
 
-OOP, a major component of the design of the simulation, is the practice of treating code as a collection of classes and objects, each responsible for one small aspect of the whole, as opposed to a structure where the whole program is treated as one long series of functions. Programs written with OOP in mind usually have a number of defining characteristics, describing the way in which objects are to communicate.
+OOP, a major component of the design of the simulation, is the practice of handling a collection of classes and objects, where each responsible for one small aspect of the whole, as opposed to a structure where the whole program is treated as one long series of functions. Programs written with OOP in mind usually have a number of defining characteristics, describing the way in which objects are to communicate.
 
 The fact that the simulation concerns an arbitrary number of discrete objects (planets) makes it easy to conceptualise each planet as an instance of the planet class, with its own properties such as mass, radius, position and velocity. Furthermore, each planet must be able to update its own location and velocity on every rendered frame, so it was intuitive to introduce a method of that class to handle updating these fields for a given planet. The principles of OOP allow each instance of this class to access data of all other instances, so any given planet can calculate the force on itself from all the other individual planets.
 
