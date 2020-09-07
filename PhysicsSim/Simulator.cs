@@ -22,7 +22,7 @@ namespace PhysicsSim
 			{"Grid", Color.Gray},
 			{"UI", Color.LightBlue},
 			{"Debug UI", Color.LightBlue},
-			{"New Planet", Color.DarkRed},
+			{"New Planet", Color.White},
 			{"Trails", Color.LightGreen}
 		};
 		
