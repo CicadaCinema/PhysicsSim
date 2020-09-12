@@ -22,6 +22,22 @@ namespace PhysicsSim
         
         // stores the co-ordinates of points making up this planet's trail
         List<short[]> trail = new List<short[]>();
+        
+        // check if a number is within (0), above (1) or below (-1) a range
+        int TestRange(int testValue, int[] range)
+        {
+            if (testValue < range[0])
+            {
+                return -1;
+            } else if (testValue > range[1])
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
         public void CreateUpdate()
         {
@@ -56,16 +72,15 @@ namespace PhysicsSim
             // if the planet is on the final drawLevel and the game is unpaused, update its position and velocity
             if (drawLevel == 3 && !Switches.pausedMode)
             {
-                // GRAVITY!
-
                 // begin collecting the total acceleration for this frame in a new variable
                 accelerationThisFrame = new Vector2();
                 
+                // GRAVITY!
                 // loop through all the created planets and get their affect on the acceleration of this planet
                 foreach (Planet planet in Simulator.planets)
                 {
-                    // only perform the gravity calculation if the two planets are not touching and distinct
-                    if (!Equals(planet, this) && ((planet.position - position).Length() > (planet.radius + radius)))
+                    // only perform the gravity calculation if the two planets are not touching, distinct and gravity is enabled
+                    if (Switches.gravityEnabled && !Equals(planet, this) && ((planet.position - position).Length() > (planet.radius + radius)))
                     {
                         // acceleration due to gravity = (constant*m)/(r^2) - this does not depend on the mass of the body being accelerated
                         float accelerationMagnitude = planet.mass / Vector2.Subtract(planet.position, position).LengthSquared();
@@ -81,9 +96,44 @@ namespace PhysicsSim
                     }
                 }
                 
-                // scale both acceleration and velocity before applying them to the relevant fields
+                // apply acceleration, scaled velocity value to the relevant field
                 velocity += accelerationThisFrame;
                 position += velocity/50;
+                
+                
+                
+                
+                // virtual screen bounds (virtual screen goes from radius to virtualScreenWidth), accounting for the radius of the planet
+                int virtualScreenWidth = Simulator.currentWindowWidth - radius;
+                
+                
+                // BOUNCE OFF EDGES???
+                
+                // TODO: comment this fully
+                // TODO: add y component
+                // TODO: handle the special case where the planet is spawned outside the virtual screen bounds
+                int xRangeTestResult = TestRange(Convert.ToInt32(position.X), new int[] {radius, virtualScreenWidth});
+                while (xRangeTestResult != 0)
+                {
+                    switch (xRangeTestResult)
+                    {
+                        // position is below 0
+                        case -1:
+                            position.X = (position.X - radius) * -1 + radius;
+                            break;
+                        // position is above the current screen resolution
+                        case 1:
+                            position.X = (position.X - virtualScreenWidth) * -1 + virtualScreenWidth;
+                            break;
+                    }
+                    
+                    // change direction of velocity and keep testing
+                    velocity.X *= -1;
+                    xRangeTestResult = TestRange(Convert.ToInt32(position.X), new int[] {0, Simulator.currentWindowWidth});
+                }
+                
+                
+                
                 
                 // add the current position of the planet to its trail
                 trail.Add(new short[2] {Convert.ToInt16(position.X), Convert.ToInt16(position.Y)});

@@ -12,6 +12,7 @@ namespace PhysicsSim
         
         // other globals
         public static int trailDuration = 600; // measured in frames
+        public static bool gravityEnabled = false;
         public static int gravitationalConstant = 1000;
 
         // user-toggleable switches
