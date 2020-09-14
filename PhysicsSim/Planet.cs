@@ -38,6 +38,41 @@ namespace PhysicsSim
                 return 0;
             }
         }
+        
+        // generic function for edge bouncing in 1 dimension
+        (int, int) BounceEdge(int position, int velocity, int[] range)
+        {
+            // add position to velocity
+            position += velocity;
+            
+            // test to see if position is within range
+            int rangeTestResult = TestRange(position, range);
+            
+            // if position is outside range, take action
+            while (rangeTestResult != 0)
+            {
+                // the velocity direction must be changed
+                velocity *= -1;
+                
+                switch (rangeTestResult)
+                {
+                    // position is below 0
+                    case -1:
+                        position = (position-range[0]) * -1 + range[0];
+                        break;
+                    // position is above the current screen resolution
+                    case 1:
+                        position = (position-range[1]) * -1 + range[1];
+                        break;
+                }
+                
+                // test to see if position is within range
+                rangeTestResult = TestRange(position, range);
+            }
+            
+            // return the position and velocity
+            return (position, velocity);
+        }
 
         public void CreateUpdate()
         {
@@ -100,41 +135,16 @@ namespace PhysicsSim
                 velocity += accelerationThisFrame;
                 position += velocity/50;
                 
-                
-                
-                
-                // virtual screen bounds (virtual screen goes from radius to virtualScreenWidth), accounting for the radius of the planet
-                int virtualScreenWidth = Simulator.currentWindowWidth - radius;
-                
-                
-                // BOUNCE OFF EDGES???
-                
-                // TODO: comment this fully
-                // TODO: add y component
                 // TODO: handle the special case where the planet is spawned outside the virtual screen bounds
-                int xRangeTestResult = TestRange(Convert.ToInt32(position.X), new int[] {radius, virtualScreenWidth});
-                while (xRangeTestResult != 0)
-                {
-                    switch (xRangeTestResult)
-                    {
-                        // position is below 0
-                        case -1:
-                            position.X = (position.X - radius) * -1 + radius;
-                            break;
-                        // position is above the current screen resolution
-                        case 1:
-                            position.X = (position.X - virtualScreenWidth) * -1 + virtualScreenWidth;
-                            break;
-                    }
-                    
-                    // change direction of velocity and keep testing
-                    velocity.X *= -1;
-                    xRangeTestResult = TestRange(Convert.ToInt32(position.X), new int[] {0, Simulator.currentWindowWidth});
-                }
+
+                // virtual screen bounds (eg virtual screen goes from radius to virtualScreenW/H), accounting for the radius of the planet
+                int virtualScreenWidth = Simulator.currentWindowWidth - radius;
+                int virtualScreenHeight = Simulator.currentWindowHeight - radius;
                 
-                
-                
-                
+                // update position and velocity, bouncing off edges
+                (position.X, velocity.X) = BounceEdge(Convert.ToInt32(position.X), Convert.ToInt32(velocity.X), new []{radius, virtualScreenWidth});
+                (position.Y, velocity.Y) = BounceEdge(Convert.ToInt32(position.Y), Convert.ToInt32(velocity.Y), new []{radius, virtualScreenHeight});
+
                 // add the current position of the planet to its trail
                 trail.Add(new short[2] {Convert.ToInt16(position.X), Convert.ToInt16(position.Y)});
                 
